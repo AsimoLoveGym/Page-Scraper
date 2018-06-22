@@ -1,0 +1,28 @@
+This is the final project for CISC504LSP18 at Harrisburg University of Science and Technology.
+Instructed by Prof. Camero-Alzate
+Author: Zhuangzhuang Xia
+
+Project: Page Scraper
+Description:
+a. Create an application which connects to a site and pulls out all links, or images,
+b. Saves them to a list.
+c. Organize the indexed content and don’t allow duplicates.
+d. Have it put the results into an easily searchable index file.
+
+pageScraper()
+- Main function
+- You can change the pageLink var to website you'd like to extract content
+
+extractImg()
+- Function for Extracting Images
+
+extractLinks()
+- Function for Extracting Images
+
+BeautifulSoup
+- Dependency library for html parsing
+
+requests
+- Dependency library for http request
+
+To start this project, just run pageScraper().

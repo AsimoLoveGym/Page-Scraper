@@ -51,54 +51,28 @@ def extractLinks(page_content):
         linkfile.write("%s\n" % link)
     linkfile.close()
 
-def http_get(url):
-    """
-    Attempts to get the content at `url` by making an HTTP GET request.
-    If the content-type of response is some kind of HTML/XML, return the
-    text content, otherwise return None.
-    """
-    try:
-        with closing(get(url, timeout=5)) as resp:
-            if is_good_response(resp):
-                return resp.content
-            else:
-                return None
-
-    except RequestException as e:
-        log_error('Error during requests to {0} : {1}'.format(url, str(e)))
-        return None
-
-
-def is_good_response(resp):
-    """
-    Returns True if the response seems to be HTML, False otherwise.
-    """
-    content_type = resp.headers['Content-Type'].lower()
-    return (resp.status_code == 200
-            and content_type is not None
-            and content_type.find('html') > -1)
-
-def log_error(e):
-    """
-    It is always a good idea to log errors.
-    This function just prints them, but you can
-    make it do anything.
-    """
-    print(e)
-
 def pageScraper():
     print("************************** Page Scraper **************************")
     print("Welcome to Zhuangzhuang's final project for CISC504LSP18")
     # Input the site you'd like to search content:
-    page_link = 'https://www.cnn.com/'
-    print("The site you searched is: ", page_link)
+    pageLink = 'https://www.cnn.com/'
+    # Few other websites for example:
+    # pageLink = 'https://www.apple.com/'
+    # pageLink = 'https://www.pinterest.com/'
+    # pageLink = 'https://www.nytimes.com/'
+
+    print("The site you searched is: ", pageLink)
 
     # fetch the content from url
-    page_response = requests.get(page_link, timeout=5)
-    # parse html with BeautifulSoup
-    page_content = BeautifulSoup(page_response.content, "html.parser")
-
-    extractImg(page_content)
-    extractLinks(page_content)
+    pageResponse = requests.get(pageLink, timeout=5)
+    if pageResponse.status_code == requests.codes.ok:
+        print("Extract content success!", pageResponse.status_code)
+        # parse html with BeautifulSoup
+        pageContent = BeautifulSoup(pageResponse.content, "html.parser")
+        extractImg(pageContent)
+        extractLinks(pageContent)
+    else:
+        print("Failed to extract content. Error code: " + pageResponse.status_code + ", please contact support for troubleshooting")
+        pageResponse.raise_for_status()
 
 pageScraper()
